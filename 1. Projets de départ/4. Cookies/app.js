@@ -1,6 +1,5 @@
 const cookieForm = document.querySelector('form');
 const inputs = cookieForm.querySelectorAll('.input-group input');
-// const displayCookieBtn = cookieForm.querySelector('.display-cookie-btn');
 
 const handleValidation = (e) => {
   if (e.type === 'invalid') {
@@ -40,7 +39,11 @@ const createCookie = (newCookie) => {
 
   document.cookie = `${encodeURIComponent(newCookie.name)}=${
     encodeURIComponent(newCookie.value)}; expires=${
-    newCookie.expires.toUTCString()}`;
+      newCookie.expires.toUTCString()}`;
+
+  if (cookiesList.children.length) {
+    displayCookies();
+  }
 };
 
 const doesCookieExist = (name) => {
@@ -49,10 +52,10 @@ const doesCookieExist = (name) => {
   const cookiesName = cookies.map(cookie => cookie.split('=')[0]);
 
   const cookiePresence = cookiesName.find(cookie => cookie ===
-  encodeURIComponent(name));
+    encodeURIComponent(name));
 
-  return cookiePresence;
-}
+    return cookiePresence;
+};
 
 const toastsContainer = document.querySelector('.toasts-container');
 
@@ -66,6 +69,54 @@ const createToast = ({ name, state, color }) => {
   setTimeout(() => {
     toastInfo.remove();
   }, 2500);
-}
+};
+
+const cookiesList = document.querySelector('.cookies-list');
+const displayCookieBtn = document.querySelector('.display-cookie-btn');
+const infoTxt = document.querySelector('.info-txt');
+
+let lock = false;
+
+const displayCookies = () => {
+  if (cookiesList.children.length) cookiesList.textContent = '';
+
+  const cookies = document.cookie.replace(/\s/g, '').split(';').reverse();
+
+  if (!cookies[0]) {
+    if (lock) return;
+
+    lock = true;
+    infoTxt.textContent = 'Pas de cookies à afficher, créez-en un!';
+
+    setTimeout(() => {
+      infoTxt.textContent = '';
+      lock = false;
+    }, 1500);
+    return;
+  }
+  createElements(cookies);
+};
+
+const createElements = (cookies) => {
+  cookies.forEach(cookie => {
+    const formatCookie = cookie.split('=');
+    const listItem = document.createElement('li');
+    const name = decodeURIComponent(formatCookie[0]);
+    const value = decodeURIComponent(formatCookie[1]);
+
+    listItem.innerHTML = `
+    <p><span>Nom</span> : ${name}</p>
+    <p><span>Value</span> : ${value}</p>
+    <button>X</button>
+    `;
+    listItem.querySelector('button').addEventListener('click', (e) => {
+      createToast({ name: name, state: 'supprimé', color: 'crimson' });
+      document.cookie = `${formatCookie[0]}=; expires=${new Date(0)}`;
+      e.target.parentElement.remove();
+    })
+    cookiesList.appendChild(listItem);
+  });
+};
 
 cookieForm.addEventListener('submit', handleForm);
+displayCookieBtn.addEventListener('click', displayCookies);
