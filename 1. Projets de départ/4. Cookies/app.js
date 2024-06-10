@@ -24,15 +24,48 @@ const handleForm = (e) => {
     const nameAttribute = input.getAttribute('name');
     newCookie[nameAttribute] = input.value;
   })
-  console.log(newCookie);
 
   newCookie.expires = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
   createCookie(newCookie);
+  cookieForm.reset();
 };
 
 const createCookie = (newCookie) => {
-  // const createCookieBtn = form.querySelector('.create-cookie-btn');
-  // console.log('coucou');
+
+  if (doesCookieExist(newCookie.name)) {
+    createToast({ name: newCookie.name, state: 'modifié', color: 'orangered' });
+  } else {
+    createToast({ name: newCookie.name, state: 'créé', color: 'green' });
+  };
+
+  document.cookie = `${encodeURIComponent(newCookie.name)}=${
+    encodeURIComponent(newCookie.value)}; expires=${
+    newCookie.expires.toUTCString()}`;
 };
+
+const doesCookieExist = (name) => {
+
+  const cookies = document.cookie.replace(/\s/g, '').split(';');
+  const cookiesName = cookies.map(cookie => cookie.split('=')[0]);
+
+  const cookiePresence = cookiesName.find(cookie => cookie ===
+  encodeURIComponent(name));
+
+  return cookiePresence;
+}
+
+const toastsContainer = document.querySelector('.toasts-container');
+
+const createToast = ({ name, state, color }) => {
+  const toastInfo = document.createElement('p');
+  toastInfo.classList.add('toast');
+  toastInfo.textContent = `Cookie ${name} ${state}.`;
+  toastInfo.style.backgroundColor = color;
+  toastsContainer.appendChild(toastInfo);
+
+  setTimeout(() => {
+    toastInfo.remove();
+  }, 2500);
+}
 
 cookieForm.addEventListener('submit', handleForm);
