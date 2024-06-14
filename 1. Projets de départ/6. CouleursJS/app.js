@@ -61,4 +61,27 @@ const changeColorInput = e => {
 
 colorPickerInput.forEach(input => input.addEventListener('input', changeColorInput));
 
+const copyBtn = document.querySelector('.copy-btn');
+
+let lock = false;
+const handleGradientCopy = () => {
+  const gradient = `linear-gradient(${gradientData.angle}deg,
+  ${gradientData.colors[0]}, ${gradientData.colors[1]})`;
+  navigator.clipboard.writeText(gradient);
+
+  if (lock) return;
+  
+  lock = true;
+  copyBtn.classList.add('active');
+
+  setTimeout(() => {
+    copyBtn.classList.remove('active');
+    lock = false;
+  }, 1000);
+};
+
+copyBtn.addEventListener('click', handleGradientCopy);
+
+
+const randomBtn = document.querySelector('.random-btn');
 populateUI()

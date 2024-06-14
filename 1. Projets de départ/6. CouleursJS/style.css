@@ -10,7 +10,7 @@ body {
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   background: #333;
-  padding: clamp(20px, 20vw, 200px) 20px 0;
+  padding: clamp(20px, 20vw, 100px) 20px 0;
 }
 
 .container {
@@ -92,4 +92,41 @@ input[type="range"]{
 
 .random-btn {
   margin-left: 30px;
+}
+
+.copy-btn {
+  position: relative;
+}
+
+.copy-btn::after {
+  content: 'Copié !';
+  display: block;
+  position: absolute;
+  z-index: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  bottom: -75%;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.copy-btn.active::after {
+  animation: fade-out 1s ease-out forwards;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: O;
+    transform: translate(-50%, 10px);
+  }
 }
