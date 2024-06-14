@@ -70,7 +70,7 @@ const handleGradientCopy = () => {
   navigator.clipboard.writeText(gradient);
 
   if (lock) return;
-  
+
   lock = true;
   copyBtn.classList.add('active');
 
@@ -82,6 +82,18 @@ const handleGradientCopy = () => {
 
 copyBtn.addEventListener('click', handleGradientCopy);
 
+const randomGradientBtn = document.querySelector('.random-btn');
 
-const randomBtn = document.querySelector('.random-btn');
+const createRandomGradient = () => {
+  for (let i = 0; i < colorLabels.length; i++) {
+    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    // const randomOrientation = `${Math.floor(Math.random() * 360)}`;
+    gradientData.colors[i] = randomColor.toUpperCase();
+    // gradientData.angle = randomOrientation;
+  };
+  populateUI();
+};
+
+randomGradientBtn.addEventListener('click', createRandomGradient);
+
 populateUI()
