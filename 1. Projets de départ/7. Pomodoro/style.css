@@ -13,3 +13,80 @@ body {
   padding: clamp(20px, 5vw, 50px) 10px;
   color: #161616;
 }
+
+h1 {
+  text-align: center;
+  font-weight: 300;
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+h1 span {
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.display {
+  display: flex;
+  max-width: 750px;
+  margin: 50px auto;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  font-size: 32px;
+  padding: 35px;
+  margin: 0 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.description {
+  font-size: 40x;
+  margin-bottom: 5px;
+  font-weight: bold;
+  position: relative;
+}
+
+.time {
+  font-family: Inconsolata, sans-serif;
+}
+
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+  height: 75px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.btn img {
+  width: 50%;
+}
+
+.cycles {
+  font-size: 30px;
+  margin-top: 30px;
+  font-weight: 600;
+  text-align: center;
+}
