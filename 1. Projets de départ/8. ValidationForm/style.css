@@ -6,7 +6,131 @@
 
 body {
     min-height: 100vh;
-    background: linear-gradient(to right, #d9a7c7, #fffcdc); 
+    background: linear-gradient(to right, #d9a7c7, #fffcdc);
     font-family: Open sans, Helvetica, sans-serif;
     padding: clamp(20px, 5vw, 50px) 10px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #212121;
+  padding: 30px;
+  color: #F1F1F1;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+h2 {
+  font-size: 30px;
+  font-family: Raleway, sans-serif;
+  text-align: center;
+}
+
+.input-group {
+  margin-top: 30px;
+}
+
+.input-group label {
+  font-size: 20px;
+  display: block;
+  position: relative;
+}
+
+.input-group input {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  background: transparent;
+  outline: 0;
+  border: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #F1F1F1;
+  color: #F1F1F1;
+}
+
+.input-group input:focus {
+  box-shadow: 0 1px 0 #fff;
+}
+
+.input-group input::placeholder {
+  font-size: 16px;
+}
+
+.icon-input-container {
+  position: relative;
+}
+
+.icon-verif {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.error-msg {
+  margin-top: 7px;
+  color: #f75252;
+  font-weight: 400;
+  display: none;
+}
+
+.pswd-info {
+  margin-top: 8px;
+  color: #a9a9a9;
+  font-weight: 400;
+  display: block;
+}
+
+.lines {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.l1, .l2, .l3 {
+  height: 5px;
+  margin: 15px 5px 20px;
+  width: 30%;
+  position: relative;
+}
+
+.l1 {
+  background-color: #cf5914;
+}
+.l2 {
+  background-color: #fdeb50;
+}
+.l3 {
+  background-color: #14e214;
+}
+
+.lines span {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+form button {
+  display: block;
+  font-family: Raleway, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  min-width: 150px;
+  margin: 40px auto 10px;
+  padding: 12px 15px;
+  background-color: #fffcdc;
+  border: 1px solid #f1f1f13d;
+  color: #111;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #e3dfa2;
 }
