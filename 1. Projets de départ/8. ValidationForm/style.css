@@ -90,6 +90,7 @@ h2 {
   align-items: center;
   margin: 0 auto;
   width: 80%;
+  display: none;
 }
 
 .l1, .l2, .l3 {
