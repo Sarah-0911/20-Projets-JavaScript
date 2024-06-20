@@ -40,7 +40,6 @@ emailInput.addEventListener('input', emailValidation);
 
 
 const passwordInput = document.querySelector('#password');
-// const lines = document.querySelector('.lines');
 
 const passwordVerification = {
   length: false,
@@ -82,15 +81,39 @@ const passwordValidation = () => {
     showValidation({ index: 2, validation: false })
   } else {
     showValidation({ index: 2, validation: true })
-  }
+  };
 
-  // if (validationResult < 2) {
-  //   lines(l1).style.display = 'inline';
-  // } else if (validationResult === 2) {
-  //   lines(l2).style.display = 'inline';
-  // } else {
-  //   lines(l3).style.display = 'inline';
-  // }
+  passwordStrength();
+};
+
+const lines = document.querySelectorAll('.lines div');
+
+const passwordStrength = () => {
+  const passwordLength = passwordInput.value.length;
+  if (!passwordLength) {
+    addLines(0);
+  }
+  else if (passwordLength > 9 && passwordVerification.symbol &&
+  passwordVerification.number) {
+    addLines(3);
+  }
+  else if (passwordLength > 6 && passwordVerification.symbol ||
+  passwordVerification.number) {
+    addLines(2);
+  }
+  else {
+    addLines(1);
+  };
+};
+
+const addLines = (numberOfLines) => {
+  lines.forEach((line, index) => {
+    if (index < numberOfLines) {
+      line.style.display = 'block';
+    } else {
+      line.style.display = 'none';
+    }
+  })
 };
 
 passwordInput.addEventListener('blur', passwordValidation);
