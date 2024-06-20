@@ -120,6 +120,28 @@ passwordInput.addEventListener('blur', passwordValidation);
 passwordInput.addEventListener('input', passwordValidation);
 
 
+const confirmInput = document.querySelector('#psw-confirmation');
+
+if (validationIcons[3].style.display === 'inline') {
+  confirmPassword()
+};
+
+const confirmPassword = () => {
+  if (!confirmInput.value && !passwordInput.value) {
+    validationIcons[3].style.display = 'none';
+  }
+  else if (confirmInput.value !== passwordInput.value) {
+    showValidation({ index: 3, validation: false })
+  }
+  else {
+    showValidation({ index: 3, validation: true })
+  }
+};
+
+confirmInput.addEventListener('blur', confirmPassword);
+confirmInput.addEventListener('input', confirmPassword);
+
+
 const showValidation = ({index, validation}) => {
   if (validation) {
     validationIcons[index].style.display = 'inline';
