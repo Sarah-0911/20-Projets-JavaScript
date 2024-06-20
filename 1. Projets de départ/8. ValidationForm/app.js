@@ -57,6 +57,7 @@ let passwordValue;
 
 const passwordValidation = () => {
   passwordValue = passwordInput.value;
+  let validationResult = 0;
   for (const prop in passwordVerification) {
 
     if (prop === 'length') {
@@ -64,30 +65,33 @@ const passwordValidation = () => {
         passwordVerification.length = false;
       } else {
         passwordVerification.length = true;
+        validationResult++;
       }
       continue;
     }
 
     if(regexList[prop].test(passwordValue)) {
       passwordVerification[prop] = true;
+      validationResult++;
     } else {
       passwordVerification[prop] = false;
     }
   }
 
-  console.log(passwordVerification);
+  if (validationResult !== 3) {
+    showValidation({ index: 2, validation: false })
+  } else {
+    showValidation({ index: 2, validation: true })
+  }
 
-  // const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;
-  // if (passwordInput.value.lenght < 6 && passwordRegex.test(passwordInput.value)) {
-  //   showValidation({ index: 2, validation: true })
-  //   if (passwordInput.value.lenght < 6) {
-  //     lines.style.display = 'inline';
-  //   }
+  // if (validationResult < 2) {
+  //   lines(l1).style.display = 'inline';
+  // } else if (validationResult === 2) {
+  //   lines(l2).style.display = 'inline';
   // } else {
-  //   showValidation({ index: 2, validation: false })
-  // };
+  //   lines(l3).style.display = 'inline';
+  // }
 };
-
 
 passwordInput.addEventListener('blur', passwordValidation);
 passwordInput.addEventListener('input', passwordValidation);
@@ -97,11 +101,11 @@ const showValidation = ({index, validation}) => {
   if (validation) {
     validationIcons[index].style.display = 'inline';
     validationIcons[index].src = "ressources/check.svg";
-    // validationTexts[index].style.display = 'none';
+    if (validationTexts[index]) validationTexts[index].style.display = 'none';
   } else {
     validationIcons[index].style.display = 'inline';
     validationIcons[index].src = "ressources/error.svg";
-    // validationTexts[index].style.display = 'block';
+    if (validationTexts[index]) validationTexts[index].style.display = 'block';
   }
 };
 
