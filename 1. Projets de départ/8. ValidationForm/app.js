@@ -1,22 +1,46 @@
+const inputsValidity = {
+  user: false,
+  email: false,
+  password: false,
+  passwordConfirmation: false
+};
+
 const form = document.querySelector('form');
+const container = document.querySelector('container');
+
 const validationIcons = document.querySelectorAll('.icon-verif');
 const validationTexts = document.querySelectorAll('.error-msg');
 
 const userInput = document.querySelector('#user');
 
-// const handleForm = (e) => {
-//   e.preventDefault();
 
-//   const userNameInput = userName.value;
-//   userValidation(userNameInput);
-// };
+let isAnimating = false;
+const handleForm = (e) => {
+  e.preventDefault();
+  const keys = Object.keys(inputsValidity);
+  const failedInputs = keys.filter(key => !inputsValidity[key]);
+  if (failedInputs.length && !isAnimating) {
+    isAnimating = true;
+    container.classList.add('shake');
+    setTimeout(() => {
+      container.classList.remove('shake');
+      isAnimating = false;
+    }, 400);
+  } else {
+    isAnimating = false;
+  };
+};
 
+form.addEventListener('submit', handleForm);
 
 const userValidation = () => {
   if (userInput.value.length >= 3) {
     showValidation({ index: 0, validation: true });
+    inputsValidity.user = true;
   } else {
     showValidation({ index: 0, validation: false });
+    inputsValidity.user = false;
+
   };
 };
 
@@ -30,8 +54,10 @@ const emailValidation = () => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
   if (emailRegex.test(emailInput.value)) {
     showValidation({ index: 1, validation: true });
+    inputsValidity.email = true;
   } else {
     showValidation({ index: 1, validation: false });
+    inputsValidity.email = false;
   };
 };
 
@@ -78,9 +104,11 @@ const passwordValidation = () => {
   }
 
   if (validationResult !== 3) {
-    showValidation({ index: 2, validation: false })
+    showValidation({ index: 2, validation: false });
+    inputsValidity.password = false;
   } else {
-    showValidation({ index: 2, validation: true })
+    showValidation({ index: 2, validation: true });
+    inputsValidity.password = true;
   };
 
   passwordStrength();
@@ -131,10 +159,12 @@ const confirmPassword = () => {
     validationIcons[3].style.display = 'none';
   }
   else if (confirmInput.value !== passwordInput.value) {
-    showValidation({ index: 3, validation: false })
+    showValidation({ index: 3, validation: false });
+    inputsValidity.passwordConfirmation = false;
   }
   else {
-    showValidation({ index: 3, validation: true })
+    showValidation({ index: 3, validation: true });
+    inputsValidity.passwordConfirmation = true;
   }
 };
 
@@ -153,5 +183,3 @@ const showValidation = ({index, validation}) => {
     if (validationTexts[index]) validationTexts[index].style.display = 'block';
   }
 };
-
-// form.addEventListener('submit', handleForm);
