@@ -21,6 +21,18 @@ body {
   box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
+.container.shake {
+  animation: shake .4s;
+}
+@keyframes shake {
+  33% {
+    transform: translateX(-5px);
+  }
+  66% {
+    transform: translateX(5px);
+  }
+}
+
 h2 {
   font-size: 30px;
   font-family: Raleway, sans-serif;
