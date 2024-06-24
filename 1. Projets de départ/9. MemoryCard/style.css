@@ -62,6 +62,7 @@ h1 span {
   will-change: transform;
   transition: transform .6s;
   box-shadow: 0 5px 50px rgba(0,0,0,.3);
+  pointer-events: none;
 }
 
 .face, .back {
