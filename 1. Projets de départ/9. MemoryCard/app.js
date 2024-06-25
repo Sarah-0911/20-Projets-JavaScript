@@ -8,13 +8,14 @@ const shuffleCards = () => {
 };
 shuffleCards();
 
+let lockedCards = false;
 let cardsPicked = [];
 
 const flipACard = (e) => {
-  const card = e.target.children[0];
-  console.log(card);
-  const cardValue = e.target.getAttribute('data-attr');
+  if (lockedCards) return;
 
+  const card = e.target.children[0];
+  const cardValue = e.target.getAttribute('data-attr');
   saveCard(card, cardValue);
 
   if (cardsPicked.length  === 2) result();
@@ -32,19 +33,23 @@ const saveCard = (el, value) => {
 
 
 const result = () => {
+  saveNumberOfTries();
+
   if (cardsPicked[0].value === cardsPicked[1].value) {
     cardsPicked[0].el.parentElement.removeEventListener('click', flipACard);
     cardsPicked[1].el.parentElement.removeEventListener('click', flipACard);
     cardsPicked = [];
     return;
   }
-
+  lockedCards = true;
   setTimeout(() => {
     cardsPicked[0].el.classList.remove('active');
     cardsPicked[1].el.classList.remove('active');
     cardsPicked = [];
+    lockedCards = false;
   }, 1000)
 };
 
+const saveNumberOfTries = () => {
 
-// handleScore();
+};
