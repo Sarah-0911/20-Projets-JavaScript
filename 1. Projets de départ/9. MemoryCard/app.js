@@ -50,6 +50,20 @@ const result = () => {
   }, 1000)
 };
 
-const saveNumberOfTries = () => {
 
+const innerCards = [...document.querySelectorAll('.double-face')];
+// console.log(innerCards);
+const advice = document.querySelector('.advice');
+const score = document.querySelector('.score');
+
+let numberOfTries = 0;
+const saveNumberOfTries = () => {
+  numberOfTries ++;
+  const checkForEndGame = innerCards.filter(card => !card.classList.contains('active'));
+  if (!checkForEndGame.length) {
+    advice.textContent = 'Bravo ! Appuyez sur "espace" pour relancer une partie.'
+    score.textContent = `Votre score final : ${numberOfTries}`;
+    return;
+  }
+  score.textContent = `Nombre de coups : ${numberOfTries}`;
 };
