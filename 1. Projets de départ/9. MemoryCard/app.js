@@ -8,11 +8,11 @@ const shuffleCards = () => {
 };
 shuffleCards();
 
-
 let cardsPicked = [];
 
 const flipACard = (e) => {
   const card = e.target.children[0];
+  console.log(card);
   const cardValue = e.target.getAttribute('data-attr');
 
   saveCard(card, cardValue);
@@ -30,6 +30,21 @@ const saveCard = (el, value) => {
   console.log(cardsPicked);
 };
 
-const result = () => {
 
+const result = () => {
+  if (cardsPicked[0].value === cardsPicked[1].value) {
+    cardsPicked[0].el.parentElement.removeEventListener('click', flipACard);
+    cardsPicked[1].el.parentElement.removeEventListener('click', flipACard);
+    cardsPicked = [];
+    return;
+  }
+
+  setTimeout(() => {
+    cardsPicked[0].el.classList.remove('active');
+    cardsPicked[1].el.classList.remove('active');
+    cardsPicked = [];
+  }, 1000)
 };
+
+
+// handleScore();
