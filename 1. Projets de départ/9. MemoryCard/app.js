@@ -52,7 +52,6 @@ const result = () => {
 
 
 const innerCards = [...document.querySelectorAll('.double-face')];
-// console.log(innerCards);
 const advice = document.querySelector('.advice');
 const score = document.querySelector('.score');
 
@@ -63,7 +62,30 @@ const saveNumberOfTries = () => {
   if (!checkForEndGame.length) {
     advice.textContent = 'Bravo ! Appuyez sur "espace" pour relancer une partie.'
     score.textContent = `Votre score final : ${numberOfTries}`;
+    resetGame();
     return;
   }
   score.textContent = `Nombre de coups : ${numberOfTries}`;
 };
+
+let shuffleLock = false;
+const resetGame = (e) => {
+  e.preventDefault();
+  if (e.key === ' ') {
+    innerCards.forEach(card => card.classList.remove('active'));
+    numberOfTries = 0;
+    advice.textContent = 'Tentez de gagner avec le moins d\'essais possible.';
+    score.textContent = `Nombre de coups : ${numberOfTries}`;
+    cards.forEach(card => card.addEventListener('click', flipACard));
+
+    if (shuffleLock) return;
+    shuffleLock = true;
+
+    setTimeout(() => {
+      shuffleCards();
+      shuffleLock = false;
+    }, 600);
+  }
+};
+
+window.addEventListener('keydown', resetGame);
