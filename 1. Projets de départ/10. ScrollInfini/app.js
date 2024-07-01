@@ -6,17 +6,22 @@ const form = document.querySelector('form');
 const userInput = document.querySelector('#search');
 const errorMsg = document.querySelector('.error-msg');
 
-// let searchQuery = 'random';
+let searchQuery = '';
 let pageIndex = 1;
 
-const handleForm = (e) => {
+const handleSearch = (e) => {
   e.preventDefault();
-  const userInputValue = userInput.value;
+  imagesList.textContent = '';
 
-  if (!userInputValue) {
-    errorMsg.textContent = 'Woups, il faut écrire quelque chose.'
+  searchQuery = userInput.value;
+
+  if (!searchQuery) {
+    errorMsg.textContent = 'Woups, il faut écrire quelque chose.';
+    return;
   }
-  fetchData(userInputValue);
+  errorMsg.textContent = '';
+  pageIndex = 1;
+  fetchData(searchQuery);
 };
 
 const fetchData = async(query) => {
@@ -34,7 +39,7 @@ const fetchData = async(query) => {
 
     if (!data.total) {
       imagesList.textContent = '';
-      throw new Error("Woopsy, rien de tel dans notre base de données... tentez un mot clé plus précis !");
+      throw new Error("Woops, rien de tel dans notre base de données... tentez un mot clé plus précis !");
     }
 
     const images = data.results;
@@ -48,8 +53,6 @@ const fetchData = async(query) => {
 const imagesList = document.querySelector('.images-list');
 
 const createImages = (images) => {
-  imagesList.textContent = '';
-
   images.forEach(image => {
     const newImg = document.createElement('img');
     newImg.src = image.urls.regular;
@@ -57,4 +60,29 @@ const createImages = (images) => {
   });
 };
 
-form.addEventListener('submit', handleForm);
+const handleIntersect = (entries) => {
+  console.log(entries);
+  if (window.scrollY > window.innerHeight && entries[0].isIntersecting) {
+    pageIndex++;
+    fetchData(searchQuery);
+  }
+};
+
+const observer = new IntersectionObserver(handleIntersect,
+{rootMargin: "50%"});
+observer.observe(document.querySelector('.infinite-marker'));
+console.log(observer);
+
+
+form.addEventListener('submit', handleSearch);
+
+const scrollToTop = document.querySelector('.scroll-to-top');
+
+const pushToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
+
+scrollToTop.addEventListener('click', pushToTop);
