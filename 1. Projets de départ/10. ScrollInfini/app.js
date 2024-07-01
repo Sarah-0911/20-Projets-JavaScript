@@ -21,6 +21,7 @@ const fetchUnsplashApi = async(query) => {
   try {
     const url = `https://api.unsplash.com/search/photos/?query=${query}
     &client_id=${accessKey}`;
+
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -28,21 +29,27 @@ const fetchUnsplashApi = async(query) => {
     };
 
     const data = await response.json();
-    const arrayOfData = data.results;
-    console.log(arrayOfData);
+    const cards = data.results;
+    console.log(cards);
 
-    // const ids = arrayOfData.forEach(data => console.log(data.id));
+    displayCards(cards);
 
   } catch (error) {
       errorMsg.textContent = error.message;
-  }
-
+  };
 };
 
 const imagesList = document.querySelector('.images-list');
 
-// const displayImages = (datasArray) => {
-//   datasArray.forEach(data => console.log(data.id));
-// };
+const displayCards = (cards) => {
+  imagesList.textContent = '';
+
+  cards.forEach(result => {
+    console.log(result.urls.full);
+    const img = document.createElement('img');
+    img.src = result.urls.full;
+    imagesList.appendChild(img);
+  });
+};
 
 form.addEventListener('submit', handleForm);
