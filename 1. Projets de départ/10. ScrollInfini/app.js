@@ -6,6 +6,9 @@ const form = document.querySelector('form');
 const userInput = document.querySelector('#search');
 const errorMsg = document.querySelector('.error-msg');
 
+// let searchQuery = 'random';
+let pageIndex = 1;
+
 const handleForm = (e) => {
   e.preventDefault();
   const userInputValue = userInput.value;
@@ -13,14 +16,13 @@ const handleForm = (e) => {
   if (!userInputValue) {
     errorMsg.textContent = 'Woups, il faut écrire quelque chose.'
   }
-  fetchUnsplashApi(userInputValue);
+  fetchData(userInputValue);
 };
 
-const fetchUnsplashApi = async(query) => {
-
+const fetchData = async(query) => {
   try {
-    const url = `https://api.unsplash.com/search/photos/?query=${query}
-    &client_id=${accessKey}`;
+    const url = `https://api.unsplash.com/search/photos/?page=${pageIndex}&
+    per_page=30&query=${query}&client_id=${accessKey}`;
 
     const response = await fetch(url);
 
@@ -29,10 +31,14 @@ const fetchUnsplashApi = async(query) => {
     };
 
     const data = await response.json();
-    const cards = data.results;
-    console.log(cards);
 
-    displayCards(cards);
+    if (!data.total) {
+      imagesList.textContent = '';
+      throw new Error("Woopsy, rien de tel dans notre base de données... tentez un mot clé plus précis !");
+    }
+
+    const images = data.results;
+    createImages(images);
 
   } catch (error) {
       errorMsg.textContent = error.message;
@@ -41,14 +47,13 @@ const fetchUnsplashApi = async(query) => {
 
 const imagesList = document.querySelector('.images-list');
 
-const displayCards = (cards) => {
+const createImages = (images) => {
   imagesList.textContent = '';
 
-  cards.forEach(result => {
-    console.log(result.urls.full);
-    const img = document.createElement('img');
-    img.src = result.urls.full;
-    imagesList.appendChild(img);
+  images.forEach(image => {
+    const newImg = document.createElement('img');
+    newImg.src = image.urls.regular;
+    imagesList.appendChild(newImg);
   });
 };
 
