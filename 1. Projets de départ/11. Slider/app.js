@@ -9,6 +9,7 @@ const sliderData = {
 
 const handleClick = (e) => {
   getDirection(e.target);
+  slideOut();
   };
 
   const getDirection = (btn) => {
@@ -26,5 +27,32 @@ const handleClick = (e) => {
       sliderData.slideInIndex = sliderData.slideOutIndex + sliderData.direction;
     }
   };
+
+  const slideOut = () => {
+    slideAnimation({
+      el: slides[sliderData.slideInIndex],
+      props: {
+        display: 'flex',
+        transform: `translateX(${sliderData.direction < 0 ? '100%' : '-100%'})`,
+        opacity: 0
+      }
+    })
+
+    slideAnimation({
+      el: slides[sliderData.slideOutIndex],
+      props: {
+        transition: 'transform .4s cubic-bezier(0.74, -0.34, 1, 1.19), opacity .4s ease-out',
+        transform: `translateX(${sliderData.direction < 0 ? '-100%' : '100%'})`,
+        opacity: 0
+      }
+    })
+  };
+
+  const slideAnimation = (animationObject) => {
+    for (const prop in animationObject.props) {
+      animationObject.el.style[prop] = animationObject.props[prop];
+    }
+  };
+
 
 directionBtns.forEach(btn => btn.addEventListener('click', handleClick));
