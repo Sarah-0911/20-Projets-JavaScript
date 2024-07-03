@@ -1,5 +1,9 @@
-const checkboxInputs = document.querySelectorAll('input[type="checkbox"]');
-console.log(checkboxInputs);
+const passwordContent = document.querySelector('.password-content');
+const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+const range = document.querySelector('#range');
+const rangeLabel = document.querySelector('.range-group label');
+const generateBtn = document.querySelector('.generate-password-btn');
+const errorMsg = document.querySelector('.error-msg');
 
 const getRandomNumber = (min, max) => {
   let randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -25,23 +29,30 @@ const charactersSet = {
   symbols: addASet(33,47) + addASet(58,64) + addASet(91,96) + addASet(123,126)
 };
 
-console.log(charactersSet);
+const createPassword = () => {
+  const checkedDataSets = checkedSets();
 
-// const regexCheckboxes = {
-//   lowerChars: /^[a-z]+$/,
-//   upperChars: /^[A-Z]+$/,
-//   symbols: /^[^a-zA-Z0-9\s]+$/,
-//   numbers: /^[0-9]+$/
-// };
+  if (!checkedDataSets.length) {
+    errorMsg.textContent = 'Au moins une case doit être cochée !';
+    return;
+  } else errorMsg.textContent = '';
+};
 
-// const handleCheckboxes = () => {
-//   checkboxInputs.forEach(checkbox => {
-//     for (const prop in regexCheckboxes) {
-//       if ((checkbox.checked && regexCheckboxes.prop.test(charactersSet.prop))) {
-//         console.log('yes!');
-//       }
-//     }
-//   })
-// }
+const checkedSets = () => {
+  const checkedSets = [];
 
-// handleCheckboxes()
+  checkboxes.forEach(checkbox => {
+    return checkbox.checked && checkedSets.push(charactersSet[checkbox.id])
+  });
+  return checkedSets;
+};
+
+console.log(checkedSets());
+
+
+const handleRange = (e) => {
+  rangeLabel.textContent = `Taille du mot de passe: ${e.target.value}`;
+};
+
+range.addEventListener('input', handleRange);
+generateBtn.addEventListener('click', createPassword);
