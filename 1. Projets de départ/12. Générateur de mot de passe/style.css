@@ -10,5 +10,118 @@ body {
   min-height: 100vh;
   font-family: Open sans, Helvetica, sans-serif;
   background: #111;
-  padding: clamp(20px, 5vw, 50px) 10px 10px;
+  padding: clamp(20px, 5vw, 50px) 10px 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 60px auto 0;
+  padding: 20px;
+  color: #f1f1f1;
+}
+
+.heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 100;
+}
+
+.password-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.password-content {
+  font-size: 18px;
+  flex-grow: 1;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.copy-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+.copy-btn:hover {
+  background-color: #fff;
+}
+
+.copy-btn img {
+  width: 50%;
+}
+
+
+
+.range-group {
+  margin-top: 30px;
+}
+.range-group label, .range-group input {
+  display: block;
+}
+
+.range-group label{
+  font-size: 16px;
+}
+.range-group input {
+  margin-top: 10px;
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+}
+
+.checkboxes-container {
+  margin: 30px 0;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-group:not(:first-of-type) {
+  margin-top: 16px;
+}
+
+.checkbox-group input {
+  border: none;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+.checkbox-group label {
+  font-size: 14px;
+  font-weight: 100;
+  cursor: pointer;
+}
+
+.generate-password-btn {
+  font-size: 16px;
+  min-width: 140px;
+  padding: 6px 2px;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid #f1f1f1;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  color: #d1d1d1;
+}
+
+.generate-password-btn:hover {
+  background: #f1f1f1;
+  color: #333;
+}
+
+.error-msg {
+  margin-top: 20px;
+  text-align: center;
+  color: #fff;
 }
