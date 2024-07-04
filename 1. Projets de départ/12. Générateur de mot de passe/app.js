@@ -4,6 +4,7 @@ const range = document.querySelector('#range');
 const rangeLabel = document.querySelector('.range-group label');
 const generateBtn = document.querySelector('.generate-password-btn');
 const errorMsg = document.querySelector('.error-msg');
+let passwordLength = 10;
 
 const getRandomNumber = (min, max) => {
   let randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -36,19 +37,36 @@ const createPassword = () => {
     errorMsg.textContent = 'Au moins une case doit être cochée !';
     return;
   } else errorMsg.textContent = '';
+
+  const concatenatedDataSets = checkedDataSets.join('');
+
+  let password = '';
+  let passwordBase = [];
+
+  for (let i = 0; i < checkedDataSets.length; i++) {
+    passwordBase.push(checkedDataSets[i][getRandomNumber(0, checkedDataSets[i].length - 1)]);
+  }
+
+  for (let i = checkedDataSets.length; i < passwordLength; i++) {
+    password += concatenatedDataSets[getRandomNumber(0, concatenatedDataSets.length - 1)];
+  }
+
+  passwordBase.forEach((item, index) => {
+    const randomIndex = getRandomNumber(0, password.length);
+    password = password.slice(0, randomIndex) + passwordBase[index] + password.slice(randomIndex);
+  })
+
+  passwordContent.textContent = password;
 };
 
 const checkedSets = () => {
   const checkedSets = [];
 
   checkboxes.forEach(checkbox => {
-    return checkbox.checked && checkedSets.push(charactersSet[checkbox.id])
+    return checkbox.checked && checkedSets.push(charactersSet[checkbox.id]);
   });
   return checkedSets;
 };
-
-console.log(checkedSets());
-
 
 const handleRange = (e) => {
   rangeLabel.textContent = `Taille du mot de passe: ${e.target.value}`;
