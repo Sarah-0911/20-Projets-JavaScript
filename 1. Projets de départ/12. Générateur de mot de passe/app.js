@@ -4,7 +4,8 @@ const range = document.querySelector('#range');
 const rangeLabel = document.querySelector('.range-group label');
 const generateBtn = document.querySelector('.generate-password-btn');
 const errorMsg = document.querySelector('.error-msg');
-let passwordLength = 10;
+const copyBtn = document.querySelector('.copy-btn');
+let passwordLength = range.value;
 
 const getRandomNumber = (min, max) => {
   let randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -43,14 +44,17 @@ const createPassword = () => {
   let password = '';
   let passwordBase = [];
 
+  // caractères de base cochés
   for (let i = 0; i < checkedDataSets.length; i++) {
     passwordBase.push(checkedDataSets[i][getRandomNumber(0, checkedDataSets[i].length - 1)]);
   }
 
+  // reste du mdp
   for (let i = checkedDataSets.length; i < passwordLength; i++) {
     password += concatenatedDataSets[getRandomNumber(0, concatenatedDataSets.length - 1)];
   }
 
+  // mélange des 2
   passwordBase.forEach((item, index) => {
     const randomIndex = getRandomNumber(0, password.length);
     password = password.slice(0, randomIndex) + passwordBase[index] + password.slice(randomIndex);
@@ -69,8 +73,25 @@ const checkedSets = () => {
 };
 
 const handleRange = (e) => {
-  rangeLabel.textContent = `Taille du mot de passe: ${e.target.value}`;
+  passwordLength = e.target.value;
+  rangeLabel.textContent = `Taille du mot de passe: ${passwordLength}`;
+};
+
+let locked = false;
+
+const copyPassword = () => {
+  if (locked) return;
+  locked = true;
+
+  navigator.clipboard.writeText(passwordContent.textContent);
+  copyBtn.classList.add('active');
+
+  setTimeout(() => {
+    copyBtn.classList.remove('active');
+    locked = false;
+  }, 600);
 };
 
 range.addEventListener('input', handleRange);
 generateBtn.addEventListener('click', createPassword);
+copyBtn.addEventListener('click', copyPassword);

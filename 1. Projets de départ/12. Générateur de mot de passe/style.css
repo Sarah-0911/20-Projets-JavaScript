@@ -48,6 +48,7 @@ body {
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  position: relative;
 }
 .copy-btn:hover {
   background-color: #fff;
@@ -57,7 +58,29 @@ body {
   width: 50%;
 }
 
+.copy-btn::before {
+  content: 'Copié ☑️';
+  padding: 6px;
+  white-space: nowrap;
+  display: none;
+  position: absolute;
+  top: -80%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  background: #FFF;
+}
 
+.copy-btn.active::before {
+  display: block;
+  animation: toast .6s ease-out;
+}
+
+@keyframes toast {
+  to {
+    transform: translate(-50%, -4px);
+  }
+}
 
 .range-group {
   margin-top: 30px;
