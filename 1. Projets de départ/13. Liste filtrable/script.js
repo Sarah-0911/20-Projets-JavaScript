@@ -1,4 +1,5 @@
 const tableResults = document.querySelector('.table-results');
+const searchInput = document.querySelector('#search');
 let dataArray;
 
 const getUsers = async() => {
@@ -34,11 +35,12 @@ const orderList = (data) => {
 };
 
 const createUsersList = (array) => {
+  tableResults.textContent = '';
   array.forEach(user => {
-    const listItems = document.createElement('li');
-    listItems.classList.add('table-item');
+    const listItem = document.createElement('li');
+    listItem.classList.add('table-item');
 
-    listItems.innerHTML = `
+    listItem.innerHTML = `
       <p class="main-info">
         <img
           src="${user.picture.thumbnail}"
@@ -49,6 +51,22 @@ const createUsersList = (array) => {
       <p class="email">${user.email}</p>
       <p class="phone">${user.phone}</p>
     `;
-    tableResults.appendChild(listItems);
+    tableResults.appendChild(listItem);
   })
 };
+
+const filterData = (e) => {
+  const searchedString = e.target.value.replace(/\s/g, '').toLowerCase();
+  const matchArray = findMatches(searchedString);
+  createUsersList(matchArray);
+}
+
+const findMatches = (stringToMatch) => {
+  return dataArray.filter(user => {
+    const firstAndLast = (user.name.first + user.name.last).replace(/\s/g, '').toLowerCase();
+    const lastAndFirst = (user.name.last + user.name.first).replace(/\s/g, '').toLowerCase();
+    return firstAndLast.includes(stringToMatch) || lastAndFirst.includes(stringToMatch);
+  })
+};
+
+searchInput.addEventListener('input', filterData);
