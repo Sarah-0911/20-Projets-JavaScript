@@ -1,30 +1,55 @@
 const video = document.querySelector('video');
-const playTogglerBtn = document.querySelector('.play-toggler');
-const timer = document.querySelector('.timer');
+const playToggler = document.querySelector('.play-toggler');
+const togglerImg = document.querySelector('.play-toggler img');
 
-const togglePlayer = () => {
+const timersDisplay = document.querySelectorAll('.time-display');
+
+const progressBar = document.querySelector('.progress-bar');
+
+const togglePlay = () => {
   if (video.paused) {
     video.play();
-    playTogglerBtn.firstElementChild.src = 'ressources/pause.svg';
-    playTogglerBtn.firstElementChild.alt = 'pause icon';
-  } else if (video.play()) {
+    togglerImg.src = 'ressources/pause.svg';
+    togglerImg.alt = 'pause icon';
+  } else {
     video.pause();
-    playTogglerBtn.firstElementChild.src = 'ressources/play.svg';
+    togglerImg.src = 'ressources/play.svg';
+    togglerImg.alt = 'play icon';
   }
 };
 
-const displayTotalTime = () => {
-  const totalTimer = timer.lastElementChild;
-  totalTimer.textContent = `${Math.trunc(video.duration / 60)}: ${Math.trunc(video.duration % 60)}`;
+let current;
+let totalDuration;
+
+const fillDurationVariables = () => {
+  if(Number.isNaN(video.duration)) return;
+
+  current = video.currentTime;
+  totalDuration = video.duration;
+
+  formatedTime(current, timersDisplay[0]);
+  formatedTime(totalDuration, timersDisplay[1]);
 };
 
-const displayCurrentTime = () => {
-  const currentTimer = timer.firstElementChild;
-  const totalVideoTime = video.duration - e.target;
-  console.log(totalVideoTime);
-}
+const formatedTime = (time, element) => {
+  const mins = Math.trunc(time / 60);
+  let secs = Math.trunc(time % 60);
 
-displayTotalTime();
-displayCurrentTime();
+  if (secs < 10) {
+    secs = `0${secs}`;
+  };
+  element.textContent = `${mins}:${secs}`;
+};
 
-playTogglerBtn.addEventListener('click', togglePlayer);
+// const handleProgress = () => {
+
+// };
+
+video.addEventListener('loadeddata', fillDurationVariables);
+window.addEventListener('load', fillDurationVariables);
+
+video.addEventListener('click', togglePlay);
+playToggler.addEventListener('click', togglePlay);
+
+video.addEventListener('timeupdate', fillDurationVariables);
+// progressBar.addEventListener('timeupdate', handleProgress);
