@@ -12,6 +12,8 @@ const muteIcon = document.querySelector('.mute-btn img');
 
 const volumeSlider = document.querySelector('.volume-slider');
 
+const fullscreenToggler = document.querySelector('.fullscreen-toggler');
+
 
 const togglePlay = () => {
   if (video.paused) {
@@ -63,15 +65,6 @@ const handleTimeUpdate = () => {
   }
 };
 
-const handleProgressBarClick = (e) => {
- const rect = progressBar.getBoundingClientRect();
- const clickPosition = e.offsetX / rect.width;
- const newTime = clickPosition * video.duration;
-
- progress.style.transform = `scaleX(${clickPosition})`;
- video.currentTime = newTime;
-};
-
 const handleMute = () => {
   if(video.muted) {
     video.muted = false;
@@ -91,6 +84,29 @@ const handleVolume = () => {
   }
 };
 
+
+let rect = progressBar.getBoundingClientRect();
+
+const handleProgressBarClick = (e) => {
+  const clickPosition = e.offsetX / rect.width;
+  const newTime = clickPosition * video.duration;
+
+  progress.style.transform = `scaleX(${clickPosition})`;
+  video.currentTime = newTime;
+ };
+
+const handleResize = () => {
+  rect = progressBar.getBoundingClientRect();
+};
+
+const toggleFullscreen = () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    video.requestFullscreen();
+  }
+};
+
 video.addEventListener('loadeddata', fillDurationVariables);
 window.addEventListener('load', fillDurationVariables);
 
@@ -102,3 +118,8 @@ progressBar.addEventListener('click', handleProgressBarClick);
 
 muteBtn.addEventListener('click', handleMute);
 volumeSlider.addEventListener('input', handleVolume);
+
+video.addEventListener('dblclick', toggleFullscreen);
+fullscreenToggler.addEventListener('click', toggleFullscreen);
+
+window.addEventListener('resize', handleResize);
