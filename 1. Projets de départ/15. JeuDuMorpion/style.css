@@ -27,9 +27,9 @@ h1, h2 {
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  max-width: 400px;
+  max-width: 300px;
   gap: 1px;
-  margin: 50px auto;
+  margin: 30px auto;
   border: 1px solid #f1f1f1;
   background: #f1f1f1;
 }
@@ -42,7 +42,7 @@ h1, h2 {
   background: #090f29;
   color: #fff;
   cursor: pointer;
-  font-size: 65px;
+  font-size: 45px;
 }
 
 .info {
