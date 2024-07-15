@@ -78,7 +78,41 @@ const animate = () => {
   for (let i = 0; i < particlesArray.length; i ++) {
     particlesArray[i].update();
   }
+  connect();
   requestAnimationFrame(animate);
-}
+};
+
+const connect = () => {
+  for (let i = 0; i < particlesArray.length; i++) {
+
+    for (let j = i + 1; j < particlesArray.length; j++) {
+      //Math.pow non utilisé car coûte en performance quand on fait plein de calculs;
+      const squaredDistanceX = (particlesArray[i].x - particlesArray[j].x) *
+      (particlesArray[i].x - particlesArray[j].x);
+      const squaredDistanceY = (particlesArray[i].y - particlesArray[j].y) *
+      (particlesArray[i].y - particlesArray[j].y);
+
+      const hypothenuse = squaredDistanceX + squaredDistanceY;
+      //Math.sqrt(squaredDistanceX + squaredDistanceY) non utilisé même raison que Math.pow;
+
+      if (hypothenuse < 135 * 135) {
+        ctx.strokeStyle = `rgba(240,240,240,${1 - hypothenuse / (135 * 135)})`;
+        ctx.lineWidth = 0.4;
+        ctx.beginPath();
+        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+};
 
 animate();
+
+const handleResize = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  init();
+};
+
+window.addEventListener('resize', handleResize);
