@@ -326,14 +326,14 @@ section h2 {
 
 .side-apparition-container {
   transition: transform .4s ease-out, opacity .4s ease-out;
-  /* transform: translateX(30px) skew(20deg);
-  opacity: 0; */
+  transform: translateX(30px) skew(20deg);
+  opacity: 0;
 }
 
 .side-apparition-container:nth-child(odd) {
   transition: transform .4s ease-out, opacity .4s ease-out;
-  /* transform: translateX(-30px) skew(-20deg);
-  opacity: 0; */
+  transform: translateX(-30px) skew(-20deg);
+  opacity: 0;
 }
 
 .side-apparition-container.active {
