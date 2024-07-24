@@ -44,29 +44,41 @@ const slideDown = (e) => {
 heroPushLink.addEventListener('click', slideDown);
 
 
-//-- Intersection Observer --
+//-- Scroll Animation --
 
-// const sideApparitionContainers =  document.querySelectorAll('.side-apparition-container');
+const generalAnimatedElements = [
+  ...document.querySelectorAll('h2'),
+  ...document.querySelectorAll('.section-subtitle')
+];
 
-// const handleIntersect = (entries, observer) => {
-//   console.log(entries);
+const discoverSectionElements = [
+  document.querySelector('.text-discover-content h3'),
+  document.querySelector('.text-discover-content p'),
+  document.querySelector('.discover-link'),
+  document.querySelector('.discover-main-img')
+];
 
-//   entries.forEach(entry => {
-//     if (entry.isIntersecting) {
-//       entry.target.classList.add('active');
-//     }
-//   })
-// };
+const slideApparitionContainers = [
+  ...document.querySelectorAll('.side-apparition-container')
+];
 
-// const observerOptions = {
-//   root: null,
-//   rootMargin: '0px',
-//   threshold: 0.1
-// }
-// const observer = new IntersectionObserver(handleIntersect, observerOptions);
+const animatedContents = [
+  ...generalAnimatedElements,
+  ...discoverSectionElements,
+  ...slideApparitionContainers
+];
 
-// sideApparitionContainers.forEach(sideApparition => {
-//   observer.observe(sideApparition);
-// })
+const handleIntersect = (entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+      observer.unobserve(entry.target);
+    }
+  })
+};
 
-// window.addEventListener('DOMContentLoaded', handleIntersect);
+const observer = new IntersectionObserver(handleIntersect, {rootMargin: '-10%'});
+
+animatedContents.forEach(animatedContent => {
+  observer.observe(animatedContent);
+});

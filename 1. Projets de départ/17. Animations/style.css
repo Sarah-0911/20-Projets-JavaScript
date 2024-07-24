@@ -250,6 +250,34 @@ section h2 {
   object-fit: cover;
 }
 
+/* Animations */
+
+h2,
+.section-subtitle,
+.text-discover-content > *,
+.discover-main-img {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition:
+    opacity 0.5s 0.3s ease-out,
+    transform  0.5s 0.3s ease-out;
+}
+
+h2.active,
+.section-subtitle.active,
+.text-discover-content > *.active,
+.discover-main-img.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1000px) {
+    .container {
+      border-left: 0;
+      border-right: 0;
+    }
+}
+
 @media (max-width: 800px) {
   .discover-content {
     display: block;
