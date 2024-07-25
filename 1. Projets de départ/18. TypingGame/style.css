@@ -59,7 +59,11 @@ body {
   background: linear-gradient(-45deg, #131313, #2f2f2f);
 }
 
-.text-to-test {
+.time.active {
+  background-color: orange;
+}
+
+.textarea-to-test {
   width: 100%;
   min-height: 180px;
   margin: 0 auto;
@@ -73,11 +77,11 @@ body {
   font-size: 18px;
 }
 
-.text-to-test:focus {
+.textarea-to-test:focus {
   border: 2px solid #6a6a6a;
 }
 
-.text-to-test.active {
+.textarea-to-test.active {
   border: 1px solid greenyellow;
 }
 
