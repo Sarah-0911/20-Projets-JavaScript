@@ -4,10 +4,9 @@ const sentence = document.querySelector('.sentence-to-write');
 const textareaToTest = document.querySelector('.textarea-to-test');
 
 let spansFromRandomQuote;
-let timer = 60;
-let score = 0;
+let timer;
+let score;
 let timerId;
-
 
 const getNewSentence = async() => {
   try {
@@ -27,8 +26,9 @@ const getNewSentence = async() => {
     });
 
     spansFromRandomQuote = document.querySelectorAll('.sentence-to-write span');
-    // console.log(spansFromRandomQuote);
+    
     textareaToTest.value = '';
+    locked = false;
 
   } catch (error) {
     console.log(error);
@@ -41,6 +41,11 @@ const scoreDisplayed = document.querySelector('.score');
 
 const handleStart = (e) => {
   if (e.key === "Escape") {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = undefined;
+    }
+
     timer = 60;
     score = 0;
 
@@ -58,12 +63,17 @@ const handleStart = (e) => {
   }
 };
 
+let locked = false;
+
 const handleTyping = (e) => {
   if (!timerId) startTimer();
+
+  if (locked) return;
 
   const gameEnded = checkSpans(e);
 
   if (gameEnded) {
+    locked = true;
     getNewSentence();
     score += spansFromRandomQuote.length;
     scoreDisplayed.textContent = `Score: ${score}`;

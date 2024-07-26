@@ -59,8 +59,12 @@ body {
   background: linear-gradient(-45deg, #131313, #2f2f2f);
 }
 
+.time {
+  position: relative;
+  z-index: 1;
+}
 .time.active {
-  background-color: orange;
+  position: absolute;
 }
 
 .textarea-to-test {
