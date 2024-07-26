@@ -4,9 +4,13 @@ const sentence = document.querySelector('.sentence-to-write');
 const textareaToTest = document.querySelector('.textarea-to-test');
 
 let spansFromRandomQuote;
+let timer = 60;
+let score = 0;
+let timerStarted = false;
+let timerId;
+
 
 const getNewSentence = async() => {
-
   try {
     const response = await fetch(APIEndpoint);
 
@@ -25,26 +29,22 @@ const getNewSentence = async() => {
 
     spansFromRandomQuote = document.querySelectorAll('.sentence-to-write span');
     // console.log(spansFromRandomQuote);
+    textareaToTest.value = '';
 
   } catch (error) {
     console.log(error);
   }
-
 };
-
-getNewSentence();
 
 const timeDisplayed = document.querySelector('.time');
 const scoreDisplayed = document.querySelector('.score');
 
-let timer = 60;
-let score = 0;
 
 const handleStart = (e) => {
-
   if (e.key === "Escape") {
     timer = 60;
     score = 0;
+    timerStarted = false;
 
     timeDisplayed.classList.add('active');
     textareaToTest.classList.add('active');
@@ -60,44 +60,68 @@ const handleStart = (e) => {
   }
 };
 
-// let timerStarted = false;
-// let intervalId;
-
 const handleTyping = (e) => {
-  const checkedSpans = checkSpans();
+  if (!timerStarted) {
+    startTimer();
+    timerStarted = true;
+  }
 
-  // if (timerStarted) return;
+  const gameEnded = checkSpans(e);
 
-  // timerStarted = true;
-
-  // intervalId = setInterval(() => {
-  //   if (timer > 0 && e.key !== 'Escape') {
-  //     timer --;
-  //     timeDisplayed.textContent = `Temps: ${timer}`;
-  //   } else {
-  //     clearInterval(intervalId);
-  //     timerStarted = false;
-  //   }
-  // }, 1000);
+  if (gameEnded) {
+    getNewSentence();
+    score += spansFromRandomQuote.length;
+    scoreDisplayed.textContent = `Score: ${score}`;
+  }
 };
 
-const checkSpans = () => {
+const startTimer = () => {
+  timer --;
+  timeDisplayed.textContent = `Temps: ${timer}`;
 
+  timerId = setInterval(handleTime, 1000);
+}
+
+const handleTime = () => {
+  timer --;
+  timeDisplayed.textContent = `Temps: ${timer}`;
+  if(timer === 0) {
+    clearInterval(timerId);
+    timerStarted = false;
+
+    timeDisplayed.classList.remove('active');
+    textareaToTest.classList.remove('active');
+
+    spansFromRandomQuote.forEach(span => {
+      return span.classList.contains('correct') ? score++ : '';
+    })
+  }
+}
+
+const checkSpans = (e) => {
+  const inputTextArray = e.target.value.split('');
+  let completedSentence = true;
+  let currentGoodLetters = 0;
+
+
+  spansFromRandomQuote.forEach((span, index) => {
+    if (inputTextArray[index] === undefined) {
+      span.className = '';
+      completedSentence = false;
+    } else if (inputTextArray[index] === span.textContent) {
+      span.classList.remove('wrong');
+      span.classList.add('correct');
+      currentGoodLetters++;
+    } else {
+      span.classList.add('wrong');
+      span.classList.remove('correct');
+      completedSentence = false;
+    }
+
+    scoreDisplayed.textContent = `Score: ${score + currentGoodLetters}`;
+  })
+  return completedSentence;
 };
 
-// const matchText = (e) => {
-//   const inputText = e.target.value.split('');
-//   console.log(inputText);
-//   spansFromRandomQuote.forEach((span, index) => {
-//     if (inputText[index] === span.textContent) {
-//       span.style.color = 'green';
-//     } else {
-//       span.style.color = 'red';
-//     }
-//   })
-// };
-
-// textareaToTest.addEventListener('input', matchText);
-
-
+getNewSentence();
 window.addEventListener('keydown', handleStart);

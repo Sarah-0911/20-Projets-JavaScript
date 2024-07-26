@@ -96,3 +96,13 @@ body {
   content:'➡️';
   padding-right: 5px;
 }
+
+.correct {
+  color: #000;
+  background-color: #0ecf0e;
+}
+
+.wrong {
+  background-color: crimson;
+  text-decoration: underline;
+}
