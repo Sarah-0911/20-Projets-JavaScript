@@ -6,7 +6,6 @@ const textareaToTest = document.querySelector('.textarea-to-test');
 let spansFromRandomQuote;
 let timer = 60;
 let score = 0;
-let timerStarted = false;
 let timerId;
 
 
@@ -44,7 +43,6 @@ const handleStart = (e) => {
   if (e.key === "Escape") {
     timer = 60;
     score = 0;
-    timerStarted = false;
 
     timeDisplayed.classList.add('active');
     textareaToTest.classList.add('active');
@@ -61,10 +59,7 @@ const handleStart = (e) => {
 };
 
 const handleTyping = (e) => {
-  if (!timerStarted) {
-    startTimer();
-    timerStarted = true;
-  }
+  if (!timerId) startTimer();
 
   const gameEnded = checkSpans(e);
 
@@ -80,14 +75,14 @@ const startTimer = () => {
   timeDisplayed.textContent = `Temps: ${timer}`;
 
   timerId = setInterval(handleTime, 1000);
-}
+};
 
 const handleTime = () => {
   timer --;
   timeDisplayed.textContent = `Temps: ${timer}`;
+
   if(timer === 0) {
     clearInterval(timerId);
-    timerStarted = false;
 
     timeDisplayed.classList.remove('active');
     textareaToTest.classList.remove('active');
@@ -95,8 +90,11 @@ const handleTime = () => {
     spansFromRandomQuote.forEach(span => {
       return span.classList.contains('correct') ? score++ : '';
     })
+
+    scoreDisplayed.textContent = `Score: ${score}`;
+    textareaToTest.removeEventListener('input', handleTyping);
   }
-}
+};
 
 const checkSpans = (e) => {
   const inputTextArray = e.target.value.split('');
