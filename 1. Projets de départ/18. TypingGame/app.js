@@ -26,12 +26,12 @@ const getNewSentence = async() => {
     });
 
     spansFromRandomQuote = document.querySelectorAll('.sentence-to-write span');
-    
+
     textareaToTest.value = '';
     locked = false;
 
   } catch (error) {
-    console.log(error);
+    sentence.textContent = error;
   }
 };
 
@@ -40,6 +40,9 @@ const scoreDisplayed = document.querySelector('.score');
 
 
 const handleStart = (e) => {
+
+  if(!sentence.textContent) sentence.textContent = 'Attendez l\'arrivée de la phrase';
+
   if (e.key === "Escape") {
     if (timerId) {
       clearInterval(timerId);
