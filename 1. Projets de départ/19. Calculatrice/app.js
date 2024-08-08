@@ -8,6 +8,7 @@ const buttons = [...document.querySelectorAll('button[data-action]')];
 
 const digitsBtns = buttons.filter(button => /[0-9]/.test(button.getAttribute('data-action')));
 const operatorsBtns = buttons.filter(button => /[\/*+-]/.test(button.getAttribute('data-action')));
+const equalBtn = document.querySelector('[data-action="="]');
 
 const calculationDisplay = document.querySelector('.calculation');
 const resultDisplay = document.querySelector('.result');
@@ -22,7 +23,6 @@ const handleDigits = (e) => {
   resultDisplay.textContent = calculatorData.calculation;
 
   console.log(calculatorData.calculation);
-
 };
 
 const handleOperators = (e) => {
@@ -45,10 +45,20 @@ const handleOperators = (e) => {
   }
 };
 
+const showResult = () => {
+  if(/[\/*+.-]/.test(calculatorData.calculation.slice(-1))) {
+    calculationDisplay.textContent = 'Terminez le calcul par un chiffre';
+    setTimeout(() => {
+      calculationDisplay.textContent = '';
+    }, 2500)
+    return;
+  }
+};
+
 
 digitsBtns.forEach(button => button.addEventListener('click', handleDigits));
 operatorsBtns.forEach(button => button.addEventListener('click', handleOperators));
-
+equalBtn.addEventListener('click', showResult);
 
 
 
