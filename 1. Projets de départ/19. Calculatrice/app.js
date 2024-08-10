@@ -55,6 +55,9 @@ const showResult = () => {
   }
   else if (!calculatorData.displayedResult) {
     calculatorData.result = customEval(calculatorData.calculation);
+    resultDisplay.textContent = calculatorData.result;
+    calculationDisplay.textContent = calculatorData.calculation;
+    calculatorData.displayedResult = true;
   }
 };
 
@@ -84,23 +87,54 @@ const customEval = (calculation) => {
     }
   }
 
-  console.log({operator, operatorIndex});
-  const operands = getIndexes(operatorIndex, calculation);
-  console.log(operands);
+  const operandsInfo = getIndexes(operatorIndex, calculation);
 
+  let currentOperationResult;
+
+  switch (operator) {
+    case '+':
+      currentOperationResult = Number(operandsInfo.leftOperand) + Number(operandsInfo.rightOperand);
+      break;
+    case '-':
+      currentOperationResult = Number(operandsInfo.leftOperand) - Number(operandsInfo.rightOperand);
+      break;
+    case '/':
+      currentOperationResult = Number(operandsInfo.leftOperand) / Number(operandsInfo.rightOperand);
+      break;
+    case '*':
+      currentOperationResult = Number(operandsInfo.leftOperand) * Number(operandsInfo.rightOperand);
+      break;
+  }
+
+  let updatedCalculation = calculation.replace(calculation.slice(operandsInfo.startIntervalIndex, operandsInfo.lastRightOperandCharacter), currentOperationResult.toString());
+
+  if (/[\/*+-]/.test(updatedCalculation.slice(1))) {
+    customEval(updatedCalculation);
+  }
+
+  if (updatedCalculation.includes('.')) {
+    if (updatedCalculation.split('.')[1].length === 1) {
+      return Number(updatedCalculation).toString();
+    }
+    else if (updatedCalculation.split('.')[1].length > 1) {
+      return Number(updatedCalculation).toFixed(2).toString();
+    }
+  } else {
+    return updatedCalculation;
+  }
 };
 
 const getIndexes = (operatorIndex, calculation) => {
   let rightOperand = '';
-  let endIntervalIndex;
+  let lastRightOperandCharacter;
 
   for (let i = operatorIndex + 1; i <= calculation.length; i++) {
     if (i === calculation.length) {
-      endIntervalIndex = calculation.length;
+      lastRightOperandCharacter = calculation.length;
       break;
     }
     else if (/[\/*+-]/.test(calculation[i])) {
-      endIntervalIndex = i;
+      lastRightOperandCharacter = i;
       break;
     }
     else {
@@ -138,56 +172,10 @@ const getIndexes = (operatorIndex, calculation) => {
     leftOperand, //équivaut à { leftOperand: leftOperand, (...) };
     rightOperand,
     startIntervalIndex,
-    endIntervalIndex
+    lastRightOperandCharacter
   }
 };
-
-customEval('459*6')
-
 
 digitsBtns.forEach(button => button.addEventListener('click', handleDigits));
 operatorsBtns.forEach(button => button.addEventListener('click', handleOperators));
 equalBtn.addEventListener('click', showResult);
-
-
-
-//----------------------------------------------------------------------------
-
-const handleData = (e) => {
-  const data = e.target.getAttribute('data-action');
-  operator = isNaN(data);
-  console.log(operator);
-
-  // calculateData(previousInput, operator, currentInput);
-  displayData(data);
-};
-
-
-// const calculateData = (a, operator, b) => {
-//   switch (operator) {
-//     case '+':
-//       return a + b;
-//     case '-':
-//       return a - b;
-//     case '*':
-//       return a * b;
-//     case '/':
-//       return a / b;
-//     default:
-//       return 0;
-//   }
-// };
-
-// const displayData = (data) => {
-//   if (data !== 'c' && data !== 'ce') {
-//     // resetCalculator();
-//     digitsArray.push(data);
-//     resultDisplay.textContent = digitsArray.join('');
-//   }
-//   if (data === '=') {
-//     calculationDisplay.textContent = digitsArray.join('');
-//     resultDisplay.textContent = 0;
-//   }
-// };
-
-// buttons.forEach(button => button.addEventListener('click', handleData));
