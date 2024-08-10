@@ -19,16 +19,27 @@ const handleDigits = (e) => {
 
   if (calculatorData.calculation === '0') calculatorData.calculation = '';
 
+  if (calculatorData.displayedResult) {
+    calculationDisplay.textContent = '';
+    calculatorData.calculation = '';
+    calculatorData.displayedResult = false;
+  }
+
   calculatorData.calculation += buttonValue;
   resultDisplay.textContent = calculatorData.calculation;
-
-  console.log(calculatorData.calculation);
 };
 
 const handleOperators = (e) => {
   const buttonValue = e.target.getAttribute('data-action');
 
-  if (!calculatorData.calculation && buttonValue === '-') {
+  if (calculatorData.displayedResult) {
+    calculationDisplay.textContent = '';
+    calculatorData.calculation = calculatorData.result += buttonValue;
+    resultDisplay.textContent = calculatorData.calculation;
+    calculatorData.displayedResult = false;
+    return;
+  }
+  else if (!calculatorData.calculation && buttonValue === '-') {
     calculatorData.calculation += buttonValue;
     resultDisplay.textContent = calculatorData.calculation;
     return;
@@ -41,7 +52,30 @@ const handleOperators = (e) => {
   else {
     calculatorData.calculation += buttonValue;
     resultDisplay.textContent = calculatorData.calculation;
-    console.log(calculatorData.calculation);
+  }
+};
+
+const decimalButton = document.querySelector("[data-action='.']")
+
+decimalButton.addEventListener("click", handleDecimal);
+
+function handleDecimal (){
+  if(!calculatorData.calculation) return;
+
+  let lastSetOfNumbers = "";
+
+  for(let i = calculatorData.calculation.length - 1; i >= 0; i--) {
+    if(/[\/+*-]/.test(calculatorData.calculation[i])){
+      break;
+    }
+    else {
+      lastSetOfNumbers += calculatorData.calculation[i];
+    }
+  }
+
+  if(!lastSetOfNumbers.includes(".")) {
+    calculatorData.calculation += ".";
+    resultDisplay.textContent = calculatorData.calculation;
   }
 };
 
@@ -176,6 +210,32 @@ const getIndexes = (operatorIndex, calculation) => {
   }
 };
 
+const resetButton = document.querySelector('[data-action="c"]');
+const clearEntryButton = document.querySelector('[data-action="ce"]');
+
+const handleReset = () => {
+  calculatorData.calculation = '';
+  calculatorData.result = '';
+  calculatorData.displayedResult = false;
+  calculationDisplay.textContent = '';
+  resultDisplay.textContent = '0';
+};
+
+const clearEntry = () =>  {
+  if (!calculatorData.displayedResult) {
+    if (resultDisplay.textContent[0] === '0') return;
+    else if (resultDisplay.textContent.length === 1) {
+      resultDisplay.textContent = '0';
+    }
+    else {
+      calculatorData.calculation = calculatorData.calculation.slice(0, -1);
+    }
+  }
+  resultDisplay.textContent = calculatorData.calculation;
+};
+
 digitsBtns.forEach(button => button.addEventListener('click', handleDigits));
 operatorsBtns.forEach(button => button.addEventListener('click', handleOperators));
 equalBtn.addEventListener('click', showResult);
+resetButton.addEventListener('click', handleReset);
+clearEntryButton.addEventListener('click', clearEntry);
