@@ -4,3 +4,4 @@ const musicsData = [
   { title: "Aurora", artist: "SLUMB", id: 3 },
   { title: "Lost-Colours", artist: "Fakear", id: 4 },
 ];
+
