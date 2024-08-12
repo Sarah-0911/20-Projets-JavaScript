@@ -21,7 +21,7 @@ body {
 }
 
 .thumbnail-container {
-  padding: 20px 20px 10px;
+  padding: 20px 20px 6px;
   border-radius: 15px;
   user-select: none;
 }
@@ -29,7 +29,7 @@ body {
 .thumbnail-container img {
   width: 100%;
   border-radius: 15px;
-  height: 250px;
+  height: 220px;
   object-fit: cover;
   object-position: center;
   box-shadow: 0 16px 36px #00000080;
@@ -93,6 +93,52 @@ body {
   right: 0;
 }
 
-.navigation img {
-  width: 20px;
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+button {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+button img {
+  width: 25px;
+  pointer-events: none;
+}
+
+.shuffle {
+  position: absolute;
+  left: 0;
+}
+
+.shuffle svg {
+  width: 18px;
+  fill: #666568;
+  transition: fill .2s ease-in-out;
+}
+
+.shuffle.active svg {
+  fill: #f1f1f1;
+}
+
+.play-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(130deg, #71f7f9, #bdfcfe);
+}
+
+.play-btn img {
+  width: 60%;
 }
