@@ -9,5 +9,90 @@ body {
   background: #3d3f41;
   background: linear-gradient(132deg, #3d3f41 6%, #384a52 61%, #4a4c4e 95%);
   font-family: "Lato", sans-serif;
-  padding: 100px 20px;
+  padding: 20px;
+}
+
+.audio-player-container {
+  max-width: 300px;
+  margin: 0 auto;
+  background-color: #1d1d1f;
+  background: linear-gradient(132deg, #1d1d1f 6%, #283339 61%, #1f262b 95%);
+  border-radius: 30px;
+}
+
+.thumbnail-container {
+  padding: 20px 20px 10px;
+  border-radius: 15px;
+  user-select: none;
+}
+
+.thumbnail-container img {
+  width: 100%;
+  border-radius: 15px;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 16px 36px #00000080;
+}
+
+.music-info {
+  padding: 20px 50px 50px;
+}
+
+.top-information {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 40px;
+}
+
+.music-title {
+  color: #f1f1f1;
+  font-size: 24px;
+}
+
+.artist-name {
+  color: #666568;
+  font-weight: 700;
+}
+
+.current-index {
+  color: #d2d2d2;
+  font-size: 14px;
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  margin: 40px 0;
+  background-color: #727377;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.progress-bar {
+  position: relative;
+  height: 5px;
+  border-radius: 5px;
+  background-color: #4a8ea3;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(99deg, #4a8ea3, #6dd6ef 100%);
+}
+
+.time-indicator {
+  position: absolute;
+  top: 10px;
+  font-size: 14px;
+  color: #666568;
+  pointer-events: none;
+}
+
+.duration-time {
+  right: 0;
+}
+
+.navigation img {
+  width: 20px;
 }
