@@ -101,14 +101,53 @@ playButton.addEventListener('click', handlePlayPause)
 
 //-----------------------------------------------------------
 
-populateUI(musicsData[currentMusicIndex - 1]);
+const shuffleButton = document.querySelector('.shuffle');
+
+let shuffle = false;
+
+const handleShuffle = () => {
+  shuffleButton.classList.toggle('active');
+  shuffle = !shuffle;
+};
+
+shuffleButton.addEventListener('click', handleShuffle);
 
 
-// const prevButton = document.querySelector('.prev-btn');
-// const nextButton = document.querySelector('.next-btn');
+const prevButton = document.querySelector('.prev-btn');
+const nextButton = document.querySelector('.next-btn');
 
-// const choosePreviousMusic = () => {
-// };
+const changeSong = (e) => {
+  if (shuffle) {
+    playShuffleSong();
+    return;
+  }
 
-// prevButton.addEventListener('click', choosePreviousMusic);
-// nextButton.addEventListener('click', chooseNextMusic);
+  e.target.classList.contains('next-btn') || e.type === 'ended' ?
+  currentMusicIndex++ : currentMusicIndex--;
+
+  if (currentMusicIndex < 1) {
+    currentMusicIndex = musicsData.length;
+  }
+  else if (currentMusicIndex > musicsData.length) {
+    currentMusicIndex = 1;
+  }
+
+  populateUI(musicsData[currentMusicIndex - 1]);
+  play();
+};
+
+const playShuffleSong = () => {
+  const musicWithoutCurrentSong = musicsData.filter(el => el.id !== currentMusicIndex);
+  const randomMusic = musicWithoutCurrentSong[Math.floor(Math.random() * musicWithoutCurrentSong.length)];
+
+  currentMusicIndex = randomMusic.id;
+  populateUI(randomMusic);
+  play();
+};
+
+[prevButton, nextButton].forEach(button => button.addEventListener('click', changeSong));
+audio.addEventListener('ended', changeSong);
+
+//-----------------------------------------------------------------
+
+  populateUI(musicsData[currentMusicIndex - 1]);
