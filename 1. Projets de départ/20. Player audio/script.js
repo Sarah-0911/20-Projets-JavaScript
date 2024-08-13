@@ -45,9 +45,9 @@ const fillVariablesDuration = () => {
   formatedTime(totalDuration, durationTime);
 };
 
-const progressBar = document.querySelector('.progress-bar');
-console.log(progressBar.getBoundingClientRect().width);
 
+const progressBar = document.querySelector('.progress-bar');
+const progressBarContainer = document.querySelector('.progress-container');
 
 const updateProgress = () => {
   current = audio.currentTime;
@@ -57,9 +57,15 @@ const updateProgress = () => {
   progressBar.style.transform = `scaleX(${progressPosition})`;
 };
 
-// const handleBarProgress = (e) => {
 
-// };
+const rect = progressBarContainer.getBoundingClientRect();
+
+const setProgress = (e) => {
+  const progressClick = e.offsetX / rect.width;
+  const newTime = progressClick * totalDuration;
+  audio.currentTime = newTime;
+};
+
 
 const formatedTime = (time, element) => {
   const mins = Math.floor(time / 60);
@@ -68,9 +74,10 @@ const formatedTime = (time, element) => {
   element.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 };
 
+
 audio.addEventListener('loadeddata', fillVariablesDuration);
 audio.addEventListener('timeupdate', updateProgress);
-// progressBar.addEventListener('click', handleBarProgress);
+progressBarContainer.addEventListener('click', setProgress);
 
 //-----------------------------------------------------------
 
